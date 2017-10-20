@@ -2,6 +2,8 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
 
+  resources :episodes
+  resource :subscription
   get '/terms', to: 'home#terms'
   get '/privacy', to: 'home#privacy'
 
