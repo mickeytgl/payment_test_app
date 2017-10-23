@@ -23,12 +23,16 @@ class SubscriptionsController < ApplicationController
 			plan: "monthly"
 		)
 
-		customer_user.update(
+		current_user.update(
 			stripe_id: customer.id,
-			stripe_subscription_id: subscription.id
+			stripe_subscription_id: subscription.id,
+			card_last4: params[:card_last4],
+			card_type: params[:card_brand],
+			card_exp_month: params[:card_exp_month],
+			card_exp_year: params[:card_exp_year]
 		)
 		
-		redirect_to root_path	
+		#redirect_to root_path	
 	end
 
 

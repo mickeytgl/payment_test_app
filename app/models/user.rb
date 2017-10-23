@@ -9,4 +9,8 @@ class User < ApplicationRecord
   def first_name
     name.split(' ').first
   end
+
+  def subscribed?
+  	stripe_subscription_id? 
+  end
 end
