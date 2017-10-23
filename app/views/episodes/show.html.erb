@@ -5,7 +5,7 @@
   <%= @episode.title %>
 </p>
 
-<% if user_signed_in? && current_user.subscribed? %>
+<% if current_user_subscribed? %>
 <p>
   <strong>Description:</strong>
   <%= @episode.description %>

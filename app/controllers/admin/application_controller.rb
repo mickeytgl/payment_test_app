@@ -24,10 +24,10 @@ module Admin
     #   params[:per_page] || 20
     # end
 
-    def current_user_subscribed?
-      user_signed_in? && current_user.subscribed?
-    end
+#    def current_user_subscribed?
+#      user_signed_in? && current_user.subscribed?
+#    end
 
-    helper_method :current_user_subscribed? 
+#    helper_method :current_user_subscribed? 
   end
 end
