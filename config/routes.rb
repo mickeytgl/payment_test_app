@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :episodes
   resource :subscription
+  resource :card
   get '/terms', to: 'home#terms'
   get '/privacy', to: 'home#privacy'
 
