@@ -58,9 +58,12 @@
 
     <button>Update Card</button>
   <% end %>
+
+    <p class="text-center"><%= link_to "Eliminate my subscription", subscription_path, data: { confirm: "Are you sure? You cannot undo this." }, method: :delete %></p>
+
 <% end %>
 
+    <p class="btn btn-lg btn-block btn-dark"><%= link_to "Deactivate my account", registration_path(resource_name), data: { confirm: "Are you sure? You cannot undo this." }, method: :delete %></p>
 
-    <p class="text-center"><%= link_to "Deactivate my account", registration_path(resource_name), data: { confirm: "Are you sure? You cannot undo this." }, method: :delete %></p>
   </div>
 </div>

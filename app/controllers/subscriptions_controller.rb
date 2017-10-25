@@ -5,11 +5,9 @@ class SubscriptionsController < ApplicationController
 	def show
 	end
 
-	def new 
+	def new
 	end
 
-	def destroy
-	end
 
 	def create
 		customer =	if current_user.stripe_id?
@@ -20,7 +18,7 @@ class SubscriptionsController < ApplicationController
 		
 		subscription = customer.subscriptions.create( 
 			source: params[:stripeToken],
-			plan: "yearly"
+			plan: "monthly"
 		)
 
 		current_user.update(
@@ -32,9 +30,17 @@ class SubscriptionsController < ApplicationController
 			card_exp_year: params[:card_exp_year]
 		)
 		
-		#redirect_to root_path	
+		redirect_to root_path	
 	end
 
+	def destroy
+		customer = Stripe::Customer.retrieve(current_user.stripe_id)
+		susbcription = customer.subscriptions.retrieve(current_user.stripe_subscription_id)
+		susbcription.delete
+		current_user.update(stripe_subscription_id: nil)
+		
+		redirect_to root_path, notice: "Your subscription has been canceled"
+	end
 
 	private 
 

@@ -1,5 +1,6 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!
+  #before_action :current_user_subscribed?
 
   def update
     customer = Stripe::Customer.retrieve(current_user.stripe_id)
