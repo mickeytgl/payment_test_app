@@ -64,13 +64,13 @@ function stripeTokenHandler(token) {
   var form = document.getElementById('payment-form');
   var hiddenInput = document.createElement('input');
   hiddenInput.setAttribute('type', 'hidden');
-  hiddenInput.setAttribute('name', 'stripeToken');
+  hiddenInput.setAttribute('name', 'user[card_token]');
   hiddenInput.setAttribute('value', token.id);
   form.appendChild(hiddenInput);
 
-  ["brand", "exp_month", "exp_year", "last4"].forEach(function(field) {
-    addFieldToForm(form, token, field);
-  });
+  //["brand", "exp_month", "exp_year", "last4"].forEach(function(field) {
+    //addFieldToForm(form, token, field);
+  //});
   
   // Submit the form
   form.submit();

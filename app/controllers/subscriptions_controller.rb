@@ -1,4 +1,4 @@
-class SubscriptionsController < ApplicationController 
+class SubscriptionsController < ApplicationController
   before_action :authenticate_user!, except: [:new]
   before_action :redirect_to_signup, only: [:new]
 
@@ -8,46 +8,29 @@ class SubscriptionsController < ApplicationController
   def new
   end
 
-
   def create
-    customer =	if current_user.stripe_id?
-				  Stripe::Customer.retrieve(current_user.stripe_id)
-				else
-			      Stripe::Customer.create(email: current_user.email)
-				end
-		
-	subscription = customer.subscriptions.create( 
-	  source: params[:stripeToken],
-	  plan: "monthly"
-	)
+    user = current_user.stripe_customer
+    user.card_token = params[:stripeToken]
+    user.subscribe(plan = 'monthly')
+    #update_card
 
-	current_user.update(
-	  stripe_id: customer.id,
-	  stripe_subscription_id: subscription.id,
-	  card_last4: params[:card_last4],
-	  card_type: params[:card_brand],
-	  card_exp_month: params[:card_exp_month],
-	  card_exp_year: params[:card_exp_year]
-	)
-		
-	redirect_to root_path	
+    redirect_to root_path
   end
 
-	def destroy
-		customer = Stripe::Customer.retrieve(current_user.stripe_id)
-		susbcription = customer.subscriptions.retrieve(current_user.stripe_subscription_id)
-		susbcription.delete
-		current_user.update(stripe_subscription_id: nil)
-		
-		redirect_to root_path, notice: "Your subscription has been canceled"
-	end
+  def destroy
+    customer = Stripe::Customer.retrieve(current_user.stripe_id)
+    customer.subscriptions.retrieve(current_user.stripe_subscription_id).delete
+    current_user.update(stripe_subscription_id: nil)
 
-	private 
+    redirect_to root_path, notice: "Your subscription has been canceled."
+  end
 
-		def redirect_to_signup
-			if !user_signed_in?
-				session["user_return_to"] = new_subscription_path
-				redirect_to new_user_registration_path 
-			end
-		end
+  private
+
+    def redirect_to_signup
+      if !user_signed_in?
+        session["user_return_to"] = new_subscription_path
+        redirect_to new_user_registration_path
+      end
+    end
 end
