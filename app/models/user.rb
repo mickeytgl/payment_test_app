@@ -13,6 +13,6 @@ class User < ApplicationRecord
   end
 
   def subscribed?
-  	stripe_subscription_id? 
+  	processor_id? 
   end
 end

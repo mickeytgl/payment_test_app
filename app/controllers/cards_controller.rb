@@ -3,17 +3,11 @@ class CardsController < ApplicationController
   #before_action :current_user_subscribed?
 
   def update
-    customer = Stripe::Customer.retrieve(current_user.stripe_id)
-    subscription = customer.subscriptions.retrieve(current_user.stripe_subscription_id)
-    subscription.source = params[:stripeToken]
-    subscription.save
+    user = current_user
+    user.card_token = params[:stripeToken]
+    user.update_card(params[:stripeToken])
 
-    current_user.update(
-      card_last4: params[:card_last4],
-      card_exp_month: params[:card_exp_month],
-      card_exp_year: params[:card_exp_year],
-      card_type: params[:card_brand]
-    )
+    user.update_card_on_file(params)
 
     redirect_to edit_user_registration_path, notice: "Successfully updated your card"
   end

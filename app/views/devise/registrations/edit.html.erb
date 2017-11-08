@@ -40,7 +40,7 @@
 <% if current_user.subscribed? %>   
       <h4 class="text-center">Update Card</h4>
       <p>Your current registered card is:</p>
-      <div><%= current_user.card_type %> **** **** **** <%= current_user.card_last4 %></div>
+      <div><%= current_user.card_brand %> **** **** **** <%= current_user.card_last4 %></div>
       <div>Expires: <%= current_user.card_exp_month %> / <%= current_user.card_exp_year %></div>
       <hr>
   <%= form_with url: card_path, method: :put, id: "payment-form" do |form| %>
@@ -56,7 +56,7 @@
       <div id="card-errors" role="alert"></div>
     </div>
 
-    <button>Update Card</button>
+    <button>Submit New Card</button>
   <% end %>
 
     <p class="text-center"><%= link_to "Eliminate my subscription", subscription_path, data: { confirm: "Are you sure? You cannot undo this." }, method: :delete %></p>

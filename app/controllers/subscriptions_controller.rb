@@ -9,18 +9,15 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    user = current_user.stripe_customer
+    user = current_user
     user.card_token = params[:stripeToken]
-    user.subscribe(plan = 'monthly')
-    #update_card
-
+    user.subscribe('default', 'monthly')
     redirect_to root_path
   end
 
   def destroy
-    customer = Stripe::Customer.retrieve(current_user.stripe_id)
-    customer.subscriptions.retrieve(current_user.stripe_subscription_id).delete
-    current_user.update(stripe_subscription_id: nil)
+    user = current_user
+    user.stripe_subscription("monthly").cancel
 
     redirect_to root_path, notice: "Your subscription has been canceled."
   end
